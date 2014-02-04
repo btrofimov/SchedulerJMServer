@@ -29,11 +29,11 @@ abstract class AppContext (config : AppConfig){
   implicit val sender = new JMSSender()
 
 
-  implicit val inputProcessor = new EventProcessingService(processors) with SchedulerFactory
+  implicit val inputProcessor = new EventProcessingService() with SchedulerFactory
 
 
 
-  implicit val receiver = new Receiver()
+  implicit val receiver = new Receiver(processors)
 
   implicit val jmsConsumer = new org.springframework.jms.listener.DefaultMessageListenerContainer(){
     setConnectionFactory(pooledJmsConnectionFactory)

@@ -1,18 +1,13 @@
 package org.jmscheduler.appservice.ruleprocessors
 
-import org.jmscheduler.domain._
-import org.quartz.TriggerBuilder._
+import java.util.Date
+import org.jmscheduler.utils.{ExceptionMessage, ConvertExceptionAspect}
 
-class PointRuleProcessor() extends RuleProcessor{
+class PointRuleProcessor() extends RuleProcessor with ConvertExceptionAspect{
 
-  override def process(ruleId: RuleId, rule: SRule) = {
-    val arule = rule.asInstanceOf[PointRule]
-    val id = ruleId.toString
-    val trigger = newTrigger()
-      .withIdentity(id)
-      .startAt(arule.dt)
-      .forJob(id)
-      .build();
-    trigger
+  implicit def exceptionMessage = ExceptionMessage("Invalid point rule")
+
+  override def createRuleInstance(rule : String) = aspect{
+    new PointRule(new Date(rule.toLong))
   }
 }

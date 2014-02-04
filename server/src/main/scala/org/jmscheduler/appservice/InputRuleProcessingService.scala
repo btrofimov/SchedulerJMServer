@@ -6,10 +6,10 @@ import org.quartz.TriggerBuilder.newTrigger
 import org.quartz.SimpleScheduleBuilder._
 import org.quartz.{JobKey, Job, JobExecutionContext, Scheduler}
 import org.slf4j.LoggerFactory
-import org.jmscheduler.appservice.ruleprocessors.RuleProcessor
+import org.jmscheduler.appservice.ruleprocessors.{SRule, RuleProcessor}
 import org.jmscheduler.infrastructure.sender.{Sender, JMSSender}
-import org.jmscheduler.domain.{SRule, RuleId}
 import org.jmscheduler.infrastructure.closablemanager.Closable
+import org.jmscheduler.viewmodels.RuleId
 
 
 object EventProcessingService{
@@ -17,7 +17,7 @@ object EventProcessingService{
   val ID="id";
 }
 
-abstract class EventProcessingService(ruleProcessors : Symbol => RuleProcessor)(implicit sender:Sender)extends InputRuleHandler with Closable with SchedulerRefrence{
+abstract class EventProcessingService()(implicit sender:Sender) extends InputRuleHandler with Closable with SchedulerRefrence{
   import EventProcessingService._
   scheduler.start();
 
@@ -29,7 +29,7 @@ abstract class EventProcessingService(ruleProcessors : Symbol => RuleProcessor)(
     val data = jobDetail.getJobDataMap();
     data.put(CATEGORY, ruleId.category);
     data.put(ID, ruleId.id);
-    val trigger = ruleProcessors(rule.getClassId).process(ruleId, rule)
+    val trigger = rule.process(ruleId)
     scheduler.scheduleJob(jobDetail, trigger);
 
   }

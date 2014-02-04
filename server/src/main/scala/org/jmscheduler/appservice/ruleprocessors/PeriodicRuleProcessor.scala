@@ -1,21 +1,14 @@
 package org.jmscheduler.appservice.ruleprocessors
 
-import org.jmscheduler.domain.{Rule, PeriodicRule, RuleId, SRule}
-import org.quartz.{SimpleTrigger, Trigger}
-import org.quartz.TriggerBuilder.newTrigger
-import org.quartz.SimpleScheduleBuilder._
+import java.util.Date
+import org.jmscheduler.utils.{ExceptionMessage, ConvertExceptionAspect}
 
-class PeriodicRuleProcessor() extends RuleProcessor{
+class PeriodicRuleProcessor() extends RuleProcessor with ConvertExceptionAspect{
 
-  override def process( ruleId: RuleId, rule:SRule) = {
-    val arule = rule.asInstanceOf[PeriodicRule]
-    val id = ruleId.toString
-    val trigger = newTrigger()
-      .withIdentity(id)
-      .startNow()
-      .withSchedule(simpleSchedule().withIntervalInSeconds(arule.period))
-      .forJob(id)
-      .build();
-    trigger
+  implicit def exceptionMessage = ExceptionMessage("Invalid periodic rule")
+
+  override def createRuleInstance(rule : String) = aspect{
+    val tmp = rule.split(',').map(_.toInt)
+    new PeriodicRule(tmp(0), new Date(tmp(0)))
   }
 }
