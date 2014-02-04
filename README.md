@@ -25,7 +25,7 @@ Very suitable component for scalable solutions.
 This version is our primary goal.
 
 
-2.0 version
+## version 2.0
 This version is in future plans.
  * Persistent rule storage.
  * Event triggering will support topic as well as queue type.
