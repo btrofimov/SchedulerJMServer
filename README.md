@@ -1,22 +1,26 @@
-SchedulerJMServer
+jmscheduler
 =================
 
-Standalone Scheduler Server based on Terracotta Quartz, allows triggering event notifications through JMS. Very suitable component for scalable solutions.
+Standalone Scheduler Server based on Terracotta Quartz, allows seting ruels and firing events through JMS. 
+Very suitable component for scalable solutions.
+
+## Current Status
+ * under cunsrtuction
+ * integration tests and unit tests developed
+ * Version 1.0 is coming up
 
 
-Features:
-
+## version 1.0
+### Features:
  * asynchronous bidirectional interface through JMS (setting event rules, triggering event notifications)
- * Event triggering will support topic as well as queue type.
+ * support ActiveMQ and queue type
  * Set one-time as well as periodic (crontab like) rules
  * Standalone application executor
- * JEE/EAR component executor
  * configurable JMS settings
+ * Java client library to interact to jmscheduler
 
-
-
-1.0 version
-No persistent storage, all rules are stored in RAM. Application restart will lead to resetting all rules.
+### Limitations
+ * No persistent storage, all rules are stored in RAM. Application restart will lead to resetting all rules.
 
 This version is our primary goal.
 
@@ -24,5 +28,9 @@ This version is our primary goal.
 2.0 version
 This version is in future plans.
  * Persistent rule storage.
+ * Event triggering will support topic as well as queue type.
  * Respecting daylight time saving.
+ * Set crontab like rules
+ * Add support of RabbitMQ
+ * JEE/EAR component executor
 
