@@ -6,24 +6,24 @@ import org.jmscheduler.appservice.ruleprocessors.{PeriodicRuleProcessor, PointRu
 import org.jmscheduler.infrastructure.closablemanager.{Closable, ClosableManager}
 import org.apache.activemq.pool.PooledConnectionFactory
 
-case class AppConfig(host: String = null, port : Int = 0, inQueueName: String = null, outQueueName: String = null, failover : Boolean = false)
+case class AppConfig(url: String = null, inQueueName: String = null, outQueueName: String = null, failover : Boolean = false)
 
 abstract class AppContext (config : AppConfig){
 
   val processors = Map('point -> new PointRuleProcessor, 'periodic -> new PeriodicRuleProcessor)
 
 
-  implicit val jmsConnectionFactory = new org.apache.activemq.ActiveMQConnectionFactory(){setBrokerURL("failover:tcp://localhost:61616")}
+  implicit val jmsConnectionFactory = new org.apache.activemq.ActiveMQConnectionFactory(){setBrokerURL(config.url)}
   implicit val pooledJmsConnectionFactory = new org.apache.activemq.pool.PooledConnectionFactory(){setConnectionFactory(jmsConnectionFactory) }
 
-  implicit val outQueue = new org.apache.activemq.command.ActiveMQQueue("jmscheduler.fireEvent")
+  implicit val outQueue = new org.apache.activemq.command.ActiveMQQueue(config.outQueueName)
 
   implicit val jmsTemplate = new org.springframework.jms.core.JmsTemplate(){
     setConnectionFactory(pooledJmsConnectionFactory)
     setDefaultDestination(outQueue)
   }
 
-  implicit val inQueue = new org.apache.activemq.command.ActiveMQQueue("jmscheduler.addRule")
+  implicit val inQueue = new org.apache.activemq.command.ActiveMQQueue(config.inQueueName)
 
 
   implicit val sender = new JMSSender()

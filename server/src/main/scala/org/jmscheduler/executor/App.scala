@@ -31,20 +31,17 @@ object ConsoleApp  extends App with LogTrait{
     val parser =  new scopt.OptionParser[AppConfig]("jmscheduler") {
       head("","1.1")
       help("help") text("test help")
-      opt[String]('h', "host") required() action { (x, c) =>
-        c.copy(host = x) } text("JMS host")
-
-      opt[String]('p', "port") required() action { (x, c) =>
-        c.copy(port = x.toInt) } text("JMS port")
+      opt[String]('u', "url") required() action { (x, c) =>
+        c.copy(url = x) } text("JMS url, like failover:tcp://localhost:61616")
 
       opt[String]('i', "inQueueName") optional() action { (x, c) =>
-        c.copy(inQueueName = x) } text("inQueueName")
+        c.copy(inQueueName = x) } text("inQueueName, like jmscheduler.addRule")
 
       opt[String]('o', "outQueueName") optional() action { (x, c) =>
-        c.copy(outQueueName = x) } text("outQueueName")
+        c.copy(outQueueName = x) } text("outQueueName, like jmscheduler.fireEvent")
 
-      opt[Unit]('f',"failover") optional() action { (_, c) =>
-        c.copy(failover = true) } text("failover")
+      //opt[Unit]('f',"failover") optional() action { (_, c) =>
+      //  c.copy(failover = true) } text("failover")
     }
     parser
   }
