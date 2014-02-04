@@ -6,7 +6,7 @@ Very suitable component for scalable solutions.
 
 ## Current Status
  * under cunsrtuction
- * integration tests and unit tests developed
+ * integration tests and unit tests are in progress
  * Version 1.0 is coming up
 
 
