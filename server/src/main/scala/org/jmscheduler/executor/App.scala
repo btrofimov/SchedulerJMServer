@@ -5,14 +5,14 @@ import org.jmscheduler.utils.LogTrait
 
 class ConsoleAppClass(appConfig : AppConfig)  extends AppContext(appConfig) with LogTrait  {
     try {
-      logger.info("server started.");
+      logger.info("server started.")
       readChar()
       closableManager.stop
-      logger.info("done.");
+      logger.info("done.")
     }catch{
       case e:Exception => {
         logger.error(e.toString)
-        throw e;
+        throw e
       }
     }
 }
