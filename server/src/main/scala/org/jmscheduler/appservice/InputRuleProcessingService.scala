@@ -13,8 +13,8 @@ import org.jmscheduler.viewmodels.RuleId
 
 
 object EventProcessingService{
-  val CATEGORY="category";
-  val ID="id";
+  val CATEGORY="category"
+  val ID="id"
 }
 
 abstract class EventProcessingService()(implicit sender:Sender) extends InputRuleHandler with Closable with SchedulerRefrence{
@@ -25,12 +25,12 @@ abstract class EventProcessingService()(implicit sender:Sender) extends InputRul
 
     val id = ruleId.getUniqueId
 
-    val jobDetail =  newJob(classOf[EventJob]).withIdentity(id).build();
-    val data = jobDetail.getJobDataMap();
-    data.put(CATEGORY, ruleId.category);
-    data.put(ID, ruleId.id);
+    val jobDetail =  newJob(classOf[EventJob]).withIdentity(id).build()
+    val data = jobDetail.getJobDataMap()
+    data.put(CATEGORY, ruleId.category)
+    data.put(ID, ruleId.id)
     val trigger = rule.process(ruleId)
-    scheduler.scheduleJob(jobDetail, trigger);
+    scheduler.scheduleJob(jobDetail, trigger)
 
   }
 
@@ -39,7 +39,7 @@ abstract class EventProcessingService()(implicit sender:Sender) extends InputRul
   }
 
   override def stop() {
-    scheduler.shutdown();
+    scheduler.shutdown()
   }
 
   private class EventJob extends Job{
